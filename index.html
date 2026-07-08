@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Justin Chun | SaaS Implementation & Onboarding</title>
+  <meta name="description" content="SaaS implementation, onboarding project management, DTC and eCommerce resume site for Justin Chun." />
+  <style>
+    :root {
+      --bg: #0e1117;
+      --bg-soft: #151a23;
+      --panel: rgba(255,255,255,0.075);
+      --panel-strong: rgba(255,255,255,0.12);
+      --text: #f2efe9;
+      --muted: #b6afa3;
+      --line: rgba(242,239,233,0.18);
+      --accent: #c89b5c;
+      --accent-2: #9fc4b6;
+      --wine: #7a2436;
+      --shadow: 0 24px 80px rgba(0,0,0,0.35);
+      --radius: 24px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(122,36,54,0.45), transparent 28rem),
+        radial-gradient(circle at 88% 5%, rgba(159,196,182,0.18), transparent 28rem),
+        linear-gradient(145deg, #0e1117 0%, #121620 52%, #0a0c11 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.12;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, black, transparent 90%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 0;
+      background: var(--text);
+      color: #111;
+      padding: 0.75rem 1rem;
+      border-radius: 0 0 12px 0;
+      z-index: 99;
+    }
+    .skip-link:focus { left: 0; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(14,17,23,0.72);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: fit-content;
+    }
+
+    .mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--wine), var(--accent));
+      box-shadow: 0 12px 36px rgba(200,155,92,0.22);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-text strong { display: block; font-size: 0.95rem; }
+    .brand-text span { color: var(--muted); font-size: 0.78rem; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      outline: none;
+    }
+
+    .wrapper {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    .hero {
+      min-height: calc(100vh - 70px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 2rem;
+      align-items: center;
+      padding: 5rem 0 4rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-2);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 36px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      font-size: clamp(3.1rem, 7vw, 6.8rem);
+      line-height: 0.91;
+      letter-spacing: -0.075em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-lede {
+      color: var(--muted);
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      line-height: 1.7;
+      max-width: 710px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-lede strong { color: var(--text); font-weight: 700; }
+
+    .actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 2.2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      min-height: 46px;
+      padding: 0.75rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.07);
+      color: var(--text);
+      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.32);
+      outline: none;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), #e7c78c);
+      color: #1b130b;
+      border-color: transparent;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      max-width: 760px;
+    }
+
+    .meta-card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.055);
+      border-radius: 18px;
+      padding: 1rem;
+    }
+
+    .meta-card strong { display: block; font-size: 1.35rem; margin-bottom: 0.2rem; }
+    .meta-card span { color: var(--muted); font-size: 0.86rem; line-height: 1.4; }
+
+    .hero-visual {
+      position: relative;
+      min-height: 610px;
+      display: grid;
+      place-items: center;
+    }
+
+    .phone-frame {
+      width: min(100%, 420px);
+      border-radius: 38px;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 1.1rem;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.14), rgba(255,255,255,0.035)),
+        rgba(20,24,32,0.86);
+      box-shadow: var(--shadow);
+      transform: rotate(1.5deg);
+    }
+
+    .screen {
+      border-radius: 30px;
+      background: rgba(10,12,17,0.92);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .mini-top {
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .dots { display: flex; gap: 0.35rem; }
+    .dots i {
+      display: block;
+      width: 9px;
+      height: 9px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.28);
+    }
+
+    .mini-content { padding: 1rem; }
+
+    .mini-badge {
+      display: inline-flex;
+      padding: 0.35rem 0.55rem;
+      border-radius: 999px;
+      color: var(--accent-2);
+      background: rgba(159,196,182,0.1);
+      font-weight: 700;
+      font-size: 0.72rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .mini-title {
+      font-size: 2rem;
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      margin-bottom: 1rem;
+    }
+
+    .path {
+      position: relative;
+      margin: 1rem 0 0;
+      padding: 0.4rem 0 0.4rem 1rem;
+    }
+
+    .path::before {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 0.8rem;
+      bottom: 0.8rem;
+      width: 2px;
+      background: linear-gradient(var(--accent), var(--accent-2));
+    }
+
+    .step {
+      position: relative;
+      margin-bottom: 0.8rem;
+      padding-left: 1.1rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .step:last-child { margin-bottom: 0; }
+    .step::before {
+      content: "";
+      position: absolute;
+      left: -0.02rem;
+      top: 0.3rem;
+      width: 9px;
+      height: 9px;
+      border-radius: 99px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(200,155,92,0.14);
+    }
+
+    .mini-card {
+      margin-top: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 1rem;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .mini-card span { color: var(--muted); font-size: 0.82rem; display: block; margin-bottom: 0.35rem; }
+    .mini-card strong { font-size: 1.6rem; }
+
+    section {
+      padding: 5rem 0;
+      position: relative;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      margin-bottom: 0;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .chooser {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .choice {
+      cursor: pointer;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--text);
+      padding: 1.35rem;
+      min-height: 190px;
+      box-shadow: none;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .choice:hover,
+    .choice.active {
+      transform: translateY(-4px);
+      background: var(--panel-strong);
+      border-color: rgba(200,155,92,0.48);
+    }
+
+    .choice strong {
+      display: block;
+      font-size: 1.25rem;
+      margin-bottom: 0.7rem;
+      letter-spacing: -0.02em;
+    }
+
+    .choice span { color: var(--muted); line-height: 1.55; }
+
+    .proof-panel {
+      margin-top: 1rem;
+      border: 1px solid rgba(200,155,92,0.3);
+      border-radius: var(--radius);
+      background: rgba(200,155,92,0.08);
+      padding: 1.4rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .proof-panel strong { color: var(--text); }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .impact-card, .role-card, .skill-group, .case-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 1.35rem;
+    }
+
+    .impact-card b {
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
+      letter-spacing: -0.08em;
+      line-height: 1;
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    .impact-card p, .role-card p, .skill-group p, .case-card p {
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
+
+    .timeline {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      padding: 1.2rem;
+      background: rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 2rem;
+      right: 2rem;
+      top: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--wine), var(--accent), var(--accent-2));
+      opacity: 0.7;
+    }
+
+    .timeline-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .time-card {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(14,17,23,0.82);
+      padding: 1rem;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 14px 46px rgba(0,0,0,0.19);
+    }
+
+    .time-card::after {
+      content: "";
+      position: absolute;
+      left: 1rem;
+      top: calc(50% - 7px);
+      width: 14px;
+      height: 14px;
+      border-radius: 99px;
+      background: var(--accent);
+      box-shadow: 0 0 0 7px rgba(200,155,92,0.14);
+    }
+
+    .time-card small { color: var(--accent-2); font-weight: 800; letter-spacing: 0.04em; }
+    .time-card strong { display: block; margin-top: 0.5rem; font-size: 1.05rem; }
+    .time-card span { display: block; color: var(--muted); font-size: 0.86rem; line-height: 1.45; margin-top: 3.2rem; }
+
+    .roles {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .role-card {
+      display: grid;
+      grid-template-columns: 230px 1fr auto;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .role-card small {
+      color: var(--accent-2);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .role-card h3 { margin: 0 0 0.45rem; font-size: 1.35rem; letter-spacing: -0.035em; }
+    .role-chip {
+      color: #17130f;
+      background: var(--accent);
+      border-radius: 999px;
+      padding: 0.4rem 0.65rem;
+      font-size: 0.76rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .skills {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .skill-group h3 { font-size: 1.1rem; margin-bottom: 0.8rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255,255,255,0.045);
+      font-size: 0.84rem;
+    }
+
+    .cases {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .case-card h3 { margin-bottom: 1rem; }
+    .case-card dl { margin: 0; display: grid; gap: 0.8rem; }
+    .case-card dt { color: var(--accent-2); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 800; }
+    .case-card dd { margin: 0; color: var(--muted); line-height: 1.55; }
+
+    .footer {
+      padding: 4rem 0 6rem;
+    }
+
+    .contact-card {
+      border: 1px solid rgba(200,155,92,0.34);
+      border-radius: 36px;
+      padding: clamp(1.4rem, 4vw, 3rem);
+      background:
+        radial-gradient(circle at 95% 0%, rgba(200,155,92,0.18), transparent 18rem),
+        rgba(255,255,255,0.075);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .contact-card h2 { margin-bottom: 0.8rem; }
+    .contact-card p { color: var(--muted); line-height: 1.65; max-width: 680px; margin-bottom: 0; }
+
+    .fine-print {
+      color: rgba(242,239,233,0.46);
+      font-size: 0.8rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    [data-reveal].visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; padding-top: 3.5rem; }
+      .hero-visual { min-height: auto; }
+      .phone-frame { transform: none; }
+      .chooser, .impact-grid, .cases { grid-template-columns: 1fr; }
+      .skills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .timeline::before { display: none; }
+      .timeline-grid { grid-template-columns: 1fr; }
+      .time-card::after { top: 1rem; left: auto; right: 1rem; }
+      .time-card span { margin-top: 1.2rem; }
+      .role-card { grid-template-columns: 1fr; }
+      .role-chip { width: fit-content; }
+      .contact-card { grid-template-columns: 1fr; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 1rem; }
+    }
+
+    @media (max-width: 680px) {
+      .nav-inner { align-items: flex-start; }
+      .nav-links { display: none; }
+      .hero-meta, .skills { grid-template-columns: 1fr; }
+      h1 { font-size: clamp(2.9rem, 18vw, 4.2rem); }
+      section { padding: 3.5rem 0; }
+      .contact-card { border-radius: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav class="nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <a href="#top" class="brand" aria-label="Justin Chun home">
+        <span class="mark">JC</span>
+        <span class="brand-text">
+          <strong>Justin Chun</strong>
+          <span>SaaS Implementation • Onboarding PM</span>
+        </span>
+      </a>
+      <div class="nav-links">
+        <a href="#story">Story</a>
+        <a href="#impact">Impact</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#skills">Skills</a>
+        <a href="#cases">Cases</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main" class="wrapper">
+    <header id="top" class="hero">
+      <div data-reveal>
+        <div class="eyebrow">Napa, California • Remote-friendly</div>
+        <h1>From messy transitions to confident launches.</h1>
+        <p class="hero-lede">
+          I’m <strong>Justin Chun</strong>, a client-facing SaaS implementation and customer success professional focused on onboarding, platform migrations, client training, launch readiness, and post-launch adoption for DTC and eCommerce teams.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="Justin_Chun_Resume.pdf" download>Download Resume</a>
+          <a class="btn" href="https://www.linkedin.com/in/justchun/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="btn" href="mailto:hjoonc.23@gmail.com">Email Me</a>
+        </div>
+        <div class="hero-meta" aria-label="Selected resume highlights">
+          <div class="meta-card"><strong>3.5+ yrs</strong><span>SaaS implementation and customer success</span></div>
+          <div class="meta-card"><strong>25–50</strong><span>Active migration and onboarding accounts managed</span></div>
+          <div class="meta-card"><strong>10+ yrs</strong><span>Customer-facing account, DTC, and hospitality work</span></div>
+        </div>
+      </div>
+
+      <aside class="hero-visual" aria-label="Resume page visual preview" data-reveal>
+        <div class="phone-frame">
+          <div class="screen">
+            <div class="mini-top">
+              <span>career workflow</span>
+              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+            <div class="mini-content">
+              <span class="mini-badge">IMPLEMENTATION JOURNEY</span>
+              <div class="mini-title">Launch readiness without the fog.</div>
+              <div class="path">
+                <div class="step">Sales handoff</div>
+                <div class="step">Discovery and requirements</div>
+                <div class="step">Migration planning</div>
+                <div class="step">Client training</div>
+                <div class="step">eCommerce launch</div>
+                <div class="step">Adoption and retention</div>
+              </div>
+              <div class="mini-card">
+                <span>Selected impact</span>
+                <strong>35% growth</strong>
+                <p>Contributed to net wine club membership growth within first year managing DTC operations.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    <section id="story" data-reveal>
+      <div class="section-head">
+        <h2>Choose the story.</h2>
+        <p>Different hiring teams scan for different proof. These buttons shift the page emphasis without needing three separate websites.</p>
+      </div>
+      <div class="chooser" role="group" aria-label="Choose career story emphasis">
+        <button class="choice active" data-story="implementation">
+          <strong>Implementation</strong>
+          <span>Onboarding, migrations, training, launch readiness, timeline ownership, and stakeholder communication.</span>
+        </button>
+        <button class="choice" data-story="success">
+          <strong>Customer Success</strong>
+          <span>Adoption, retention, escalation management, feedback loops, executive and operational relationships.</span>
+        </button>
+        <button class="choice" data-story="dtc">
+          <strong>DTC / eCommerce</strong>
+          <span>Wine club operations, customer experience, digital engagement, hospitality, events, and direct sales.</span>
+        </button>
+      </div>
+      <div class="proof-panel" id="proof-panel" aria-live="polite">
+        <strong>Implementation proof:</strong> Led onboarding projects from sales handoff through eCommerce launch, managed 25–50 active migration and onboarding accounts, and kept clients aligned through fast-changing platform transitions.
+      </div>
+    </section>
+
+    <section id="impact" data-reveal>
+      <div class="section-head">
+        <h2>Selected impact.</h2>
+        <p>A recruiter-friendly snapshot of the measurable proof before they reach the deeper work history.</p>
+      </div>
+      <div class="impact-grid">
+        <article class="impact-card">
+          <b>25–50</b>
+          <p>Active migration and onboarding accounts managed during a merger-driven platform transition.</p>
+        </article>
+        <article class="impact-card">
+          <b>Launch</b>
+          <p>Owned onboarding from sales handoff through eCommerce launch for clients ranging from solo founders to enterprise teams.</p>
+        </article>
+        <article class="impact-card">
+          <b>35%</b>
+          <p>Contributed to net wine club membership growth within the first year as DTC and Hospitality Manager.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="timeline" data-reveal>
+      <div class="section-head">
+        <h2>Career timeline.</h2>
+        <p>The page presents your career as a progression: sales foundation, DTC operations, SaaS onboarding, enterprise success, and migration ownership.</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-grid">
+          <article class="time-card">
+            <div><small>2015–2017</small><strong>Sales foundation</strong></div>
+            <span>Toyota and Verizon experience in consultative sales, KPIs, customer relationships, and account management.</span>
+          </article>
+          <article class="time-card">
+            <div><small>2017–2022</small><strong>Wine and DTC operations</strong></div>
+            <span>Vine Cliff direct sales, hospitality, marketing, wine club operations, events, hiring, and team training.</span>
+          </article>
+          <article class="time-card">
+            <div><small>2022–2024</small><strong>SaaS onboarding PM</strong></div>
+            <span>WineDirect project management from sales handoff through launch, training, and timeline alignment.</span>
+          </article>
+          <article class="time-card">
+            <div><small>2024–2025</small><strong>Enterprise success</strong></div>
+            <span>Stakeholder relationships, product adoption, workflow usage, retention, and feedback loops.</span>
+          </article>
+          <article class="time-card">
+            <div><small>2025</small><strong>Migration ownership</strong></div>
+            <span>Commerce7 migrations and onboarding during a fast-changing post-merger environment.</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="roles" data-reveal>
+      <div class="section-head">
+        <h2>Experience as proof.</h2>
+        <p>Not a wall of bullets. Each role becomes a focused evidence card.</p>
+      </div>
+      <div class="roles">
+        <article class="role-card">
+          <div><small>Feb 2025 – Nov 2025</small></div>
+          <div>
+            <h3>Enterprise Relationship Manager • Commerce7 / Fullsteam Payments</h3>
+            <p>Primary point of contact for migration and onboarding projects, managing timelines, communication, expectations, launch readiness, risks, feedback, and cross-functional advocacy.</p>
+          </div>
+          <span class="role-chip">Migration</span>
+        </article>
+        <article class="role-card">
+          <div><small>Mar 2022 – Sep 2024</small></div>
+          <div>
+            <h3>Project Manager • WineDirect</h3>
+            <p>Led end-to-end onboarding from sales handoff through eCommerce launch, planned timelines, delivered software training, resolved onboarding challenges, and supported clients beyond launch.</p>
+          </div>
+          <span class="role-chip">Onboarding</span>
+        </article>
+        <article class="role-card">
+          <div><small>Sep 2019 – Apr 2022</small></div>
+          <div>
+            <h3>DTC and Hospitality Manager • Vine Cliff Winery</h3>
+            <p>Owned wine club operations, improved customer experience processes, led tasting room operations, executed digital marketing initiatives, planned events, and hired and trained hospitality staff.</p>
+          </div>
+          <span class="role-chip">DTC</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" data-reveal>
+      <div class="section-head">
+        <h2>Skill constellation.</h2>
+        <p>Grouped for fast scanning, so the keywords are useful instead of becoming a glitter spill.</p>
+      </div>
+      <div class="skills">
+        <article class="skill-group">
+          <h3>Implementation</h3>
+          <div class="tags">
+            <span class="tag">Customer Onboarding</span><span class="tag">Platform Migrations</span><span class="tag">Launch Readiness</span><span class="tag">Project Coordination</span><span class="tag">Client Training</span>
+          </div>
+        </article>
+        <article class="skill-group">
+          <h3>Customer Success</h3>
+          <div class="tags">
+            <span class="tag">Adoption</span><span class="tag">Retention</span><span class="tag">Escalations</span><span class="tag">Stakeholder Communication</span><span class="tag">Feedback Loops</span>
+          </div>
+        </article>
+        <article class="skill-group">
+          <h3>DTC / eCommerce</h3>
+          <div class="tags">
+            <span class="tag">Wine Club</span><span class="tag">eCommerce Operations</span><span class="tag">Direct Sales</span><span class="tag">Hospitality</span><span class="tag">Events</span>
+          </div>
+        </article>
+        <article class="skill-group">
+          <h3>Tools</h3>
+          <div class="tags">
+            <span class="tag">Salesforce</span><span class="tag">HubSpot</span><span class="tag">Intercom</span><span class="tag">Jira</span><span class="tag">Teamwork.com</span><span class="tag">Basecamp</span><span class="tag">Scribe</span><span class="tag">WineDirect</span><span class="tag">Commerce7</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="cases" data-reveal>
+      <div class="section-head">
+        <h2>Case snapshots.</h2>
+        <p>Short proof stories for humans, hiring managers, and the one recruiter reading this at 11:47 PM with seventeen tabs open.</p>
+      </div>
+      <div class="cases">
+        <article class="case-card">
+          <h3>Platform migration</h3>
+          <dl>
+            <dt>Problem</dt>
+            <dd>Clients needed structure during a merger-driven platform transition.</dd>
+            <dt>Action</dt>
+            <dd>Managed communication, expectations, blockers, timelines, and launch readiness.</dd>
+            <dt>Result</dt>
+            <dd>Kept migration and onboarding accounts moving with clearer alignment.</dd>
+          </dl>
+        </article>
+        <article class="case-card">
+          <h3>eCommerce launch</h3>
+          <dl>
+            <dt>Problem</dt>
+            <dd>Clients needed to move from sales handoff to a functioning eCommerce launch.</dd>
+            <dt>Action</dt>
+            <dd>Planned timelines, delivered software training, tracked progress, and resolved blockers.</dd>
+            <dt>Result</dt>
+            <dd>Supported launches while maintaining consultative client relationships beyond implementation.</dd>
+          </dl>
+        </article>
+        <article class="case-card">
+          <h3>DTC growth</h3>
+          <dl>
+            <dt>Problem</dt>
+            <dd>Wine club operations needed stronger account management and customer experience.</dd>
+            <dt>Action</dt>
+            <dd>Improved processes, managed membership accounts, planned events, and coordinated across teams.</dd>
+            <dt>Result</dt>
+            <dd>Contributed to 35% net membership growth within the first year.</dd>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <footer id="contact" class="footer" data-reveal>
+      <div class="contact-card">
+        <div>
+          <h2>Let’s build smoother launches.</h2>
+          <p>Available for SaaS implementation, onboarding project management, customer success, DTC/eCommerce operations, and mission-driven customer-facing roles.</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="Justin_Chun_Resume.pdf" download>Resume PDF</a>
+          <a class="btn" href="mailto:hjoonc.23@gmail.com">Contact</a>
+        </div>
+      </div>
+      <p class="fine-print">Static GitHub Pages-ready sample. Built with plain HTML, CSS, and JavaScript.</p>
+    </footer>
+  </main>
+
+  <script>
+    const stories = {
+      implementation: '<strong>Implementation proof:</strong> Led onboarding projects from sales handoff through eCommerce launch, managed 25–50 active migration and onboarding accounts, and kept clients aligned through fast-changing platform transitions.',
+      success: '<strong>Customer success proof:</strong> Managed enterprise client relationships with executive and operational stakeholders, identified underused tools and workflows, supported adoption and retention, and owned recurring feedback loops.',
+      dtc: '<strong>DTC/eCommerce proof:</strong> Owned wine club operations, managed membership accounts, improved customer experience, supported digital marketing, coordinated events, and contributed to 35% net membership growth.'
+    };
+
+    document.querySelectorAll('.choice').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.choice').forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        document.getElementById('proof-panel').innerHTML = stories[button.dataset.story];
+      });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
