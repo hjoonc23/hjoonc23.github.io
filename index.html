@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Justin Chun | SaaS Implementation, Onboarding Project Management, DTC & eCommerce." />
+  <meta name="theme-color" content="#061327" />
+  <title>Justin Chun | SaaS Implementation & Onboarding</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #020814;
+      --bg-2: #061327;
+      --panel: rgba(9, 25, 50, 0.72);
+      --panel-strong: rgba(9, 30, 64, 0.88);
+      --line: rgba(144, 190, 255, 0.24);
+      --line-strong: rgba(153, 204, 255, 0.52);
+      --text: #f6f8ff;
+      --muted: #b7c5dc;
+      --soft: #7fa9dc;
+      --accent: #55a7ff;
+      --accent-2: #236cff;
+      --accent-3: #a9d4ff;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --max: 1180px;
+      --serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 82% 18%, rgba(65, 134, 255, 0.24), transparent 34rem),
+        radial-gradient(circle at 12% 42%, rgba(35, 108, 255, 0.18), transparent 26rem),
+        linear-gradient(180deg, #020814 0%, #061327 48%, #020814 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent 70%);
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle, rgba(170, 216, 255, .38) 0 1px, transparent 1.4px),
+        radial-gradient(circle, rgba(170, 216, 255, .22) 0 1px, transparent 1.5px);
+      background-size: 120px 120px, 210px 210px;
+      background-position: 18px 50px, 80px 15px;
+      opacity: .42;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 1rem;
+      z-index: 999;
+      background: var(--accent);
+      color: white;
+      padding: .75rem 1rem;
+      border-radius: 999px;
+    }
+
+    .skip-link:focus { top: 1rem; }
+
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(144, 190, 255, .14);
+      background: rgba(2, 8, 20, .54);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: background .25s ease, box-shadow .25s ease;
+    }
+
+    .site-header.is-scrolled {
+      background: rgba(2, 8, 20, .86);
+      box-shadow: 0 14px 40px rgba(0,0,0,.28);
+    }
+
+    .nav-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: .9rem clamp(1rem, 3vw, 2rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      min-width: max-content;
+    }
+
+    .monogram {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      letter-spacing: -.08em;
+      background: radial-gradient(circle at 35% 20%, rgba(169, 212, 255, .22), rgba(11, 31, 64, .78));
+      box-shadow: 0 0 34px rgba(85, 167, 255, .18);
+    }
+
+    .brand span:last-child {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      letter-spacing: .02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: .92rem;
+      padding: .68rem .85rem;
+      border-radius: 999px;
+      transition: color .2s ease, background .2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a[aria-current="true"] {
+      color: var(--text);
+      background: rgba(85, 167, 255, .12);
+    }
+
+    .nav-cta {
+      border: 1px solid var(--line-strong);
+      color: var(--text) !important;
+      margin-left: .4rem;
+    }
+
+    .menu-button {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(9, 30, 64, .72);
+      color: white;
+      cursor: pointer;
+    }
+
+    .menu-button span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      margin: 4px auto;
+      background: currentColor;
+      border-radius: 99px;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .menu-button[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .menu-button[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .menu-button[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    main { isolation: isolate; }
+
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      align-items: end;
+      position: relative;
+      overflow: clip;
+      background:
+        linear-gradient(90deg, rgba(2, 8, 20, .94) 0%, rgba(2, 8, 20, .66) 42%, rgba(2, 8, 20, .35) 100%),
+        linear-gradient(180deg, rgba(2, 8, 20, .1) 0%, rgba(2, 8, 20, .68) 76%, #061327 100%),
+        url("assets/star-trails.webp") center / cover no-repeat;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: auto -10% 0 -10%;
+      height: 24%;
+      background:
+        radial-gradient(ellipse at 52% 100%, rgba(85, 167, 255, .28), transparent 38%),
+        linear-gradient(180deg, transparent, rgba(2,8,20,.92));
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      width: min(var(--max), calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 9rem 0 8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      color: var(--accent-3);
+      text-transform: uppercase;
+      letter-spacing: .22em;
+      font-size: .76rem;
+      font-weight: 700;
+      margin-bottom: 1.1rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+      box-shadow: 0 0 16px var(--accent);
+    }
+
+    h1, h2, h3 { margin: 0; line-height: 1; }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(4.2rem, 12vw, 9rem);
+      letter-spacing: -.07em;
+      text-wrap: balance;
+      max-width: 10ch;
+      text-shadow: 0 16px 60px rgba(0,0,0,.52);
+    }
+
+    .subtitle {
+      color: var(--accent-3);
+      font-size: clamp(1rem, 2.4vw, 1.55rem);
+      margin: 1rem 0 1.8rem;
+      max-width: 850px;
+      line-height: 1.35;
+    }
+
+    .hero-copy {
+      color: rgba(246, 248, 255, .92);
+      font-size: clamp(1.08rem, 2vw, 1.5rem);
+      line-height: 1.55;
+      max-width: 650px;
+      margin: 0 0 2rem;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .65rem;
+      min-height: 48px;
+      padding: .85rem 1.1rem;
+      border-radius: 12px;
+      border: 1px solid var(--line-strong);
+      background: rgba(7, 24, 52, .62);
+      color: var(--text);
+      font-weight: 700;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(169, 212, 255, .9);
+      box-shadow: 0 0 0 4px rgba(85, 167, 255, .14), 0 18px 36px rgba(0,0,0,.24);
+      outline: none;
+    }
+
+    .btn-primary {
+      border-color: rgba(85, 167, 255, .85);
+      background: linear-gradient(135deg, var(--accent-2), #0f83ff);
+      box-shadow: 0 14px 34px rgba(35, 108, 255, .28);
+    }
+
+    .btn svg { width: 18px; height: 18px; }
+
+    .section {
+      width: min(var(--max), calc(100% - 2rem));
+      margin: 0 auto;
+      padding: clamp(4rem, 8vw, 7rem) 0 0;
+      position: relative;
+    }
+
+    .section-heading {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-heading h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4.8vw, 3.4rem);
+      letter-spacing: -.05em;
+    }
+
+    .section-line {
+      height: 1px;
+      background: linear-gradient(90deg, rgba(169, 212, 255, .58), rgba(85, 167, 255, .2), transparent);
+      position: relative;
+    }
+
+    .section-line::before,
+    .section-line::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #dff0ff;
+      box-shadow: 0 0 18px 5px rgba(85, 167, 255, .62);
+      transform: translateY(-50%);
+    }
+
+    .section-line::before { left: 0; }
+    .section-line::after { right: 6%; }
+
+    .journey {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      position: relative;
+      padding-top: 1.2rem;
+    }
+
+    .journey::before {
+      content: "";
+      position: absolute;
+      left: 9%;
+      right: 3%;
+      top: 4.2rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(169, 212, 255, .9), rgba(169, 212, 255, .45));
+    }
+
+    .journey::after {
+      content: "→";
+      position: absolute;
+      right: 1.5%;
+      top: 3.55rem;
+      color: var(--accent-3);
+      font-size: 1.35rem;
+    }
+
+    .milestone {
+      position: relative;
+      text-align: center;
+      padding: 0 .55rem;
+    }
+
+    .date {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: .65rem;
+    }
+
+    .node {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 1rem;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid var(--line-strong);
+      background: radial-gradient(circle at 30% 20%, rgba(169, 212, 255, .18), rgba(5, 19, 41, .9));
+      box-shadow: inset 0 0 24px rgba(85, 167, 255, .08), 0 0 28px rgba(85, 167, 255, .14);
+      position: relative;
+      z-index: 2;
+      color: var(--accent-3);
+      font-size: 1.55rem;
+    }
+
+    .node svg { width: 31px; height: 31px; stroke-width: 1.6; }
+
+    .milestone h3 {
+      font-family: var(--serif);
+      font-size: 1.22rem;
+      line-height: 1.1;
+      margin-bottom: .4rem;
+    }
+
+    .role {
+      color: var(--accent);
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: .8rem;
+    }
+
+    .milestone p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0;
+      font-size: .92rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background:
+        linear-gradient(145deg, rgba(11, 33, 70, .74), rgba(4, 16, 34, .74)),
+        radial-gradient(circle at 20% 0%, rgba(85, 167, 255, .12), transparent 20rem);
+      box-shadow: var(--shadow);
+      padding: clamp(1.25rem, 2vw, 1.6rem);
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,.04), transparent);
+      transform: translateX(-140%);
+      transition: transform .55s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(169, 212, 255, .55);
+      box-shadow: 0 28px 84px rgba(0,0,0,.48), 0 0 0 1px rgba(85, 167, 255, .12);
+    }
+
+    .card:hover::after { transform: translateX(140%); }
+
+    .card-icon {
+      width: 70px;
+      height: 70px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      margin-bottom: 1.2rem;
+      color: var(--accent-3);
+      background: rgba(3, 13, 30, .45);
+    }
+
+    .card-icon svg { width: 32px; height: 32px; stroke-width: 1.55; }
+
+    .card h3 {
+      font-family: var(--serif);
+      font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+      letter-spacing: -.03em;
+      line-height: 1.15;
+      margin-bottom: .55rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0 0 1rem;
+    }
+
+    .checks {
+      list-style: none;
+      display: grid;
+      gap: .6rem;
+      padding: 0;
+      margin: 1.1rem 0 0;
+      color: rgba(246, 248, 255, .9);
+    }
+
+    .checks li {
+      display: flex;
+      align-items: flex-start;
+      gap: .55rem;
+    }
+
+    .checks li::before {
+      content: "✓";
+      color: var(--accent-3);
+      font-weight: 800;
+    }
+
+    .impact-strip {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .impact {
+      padding: 1.25rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      background: rgba(5, 18, 39, .62);
+    }
+
+    .impact strong {
+      display: block;
+      font-size: clamp(2rem, 5vw, 3rem);
+      letter-spacing: -.05em;
+      margin-bottom: .2rem;
+    }
+
+    .impact span {
+      color: var(--accent-3);
+      font-weight: 800;
+    }
+
+    .impact p {
+      margin: .55rem 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .constellation {
+      margin-top: 1rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at 50% 42%, rgba(85,167,255,.16), transparent 18rem),
+        radial-gradient(circle at 10% 80%, rgba(85,167,255,.08), transparent 22rem),
+        rgba(3, 14, 32, .66);
+      padding: clamp(1.2rem, 5vw, 4rem);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 360px) minmax(0, 1fr);
+      gap: clamp(1rem, 4vw, 2.5rem);
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .constellation::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .35;
+      background-image: radial-gradient(circle, rgba(169,212,255,.6) 0 1px, transparent 1.4px);
+      background-size: 54px 54px;
+      pointer-events: none;
+    }
+
+    .skill-list {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .skill-item {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: .9rem;
+      align-items: center;
+    }
+
+    .skill-badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid var(--line-strong);
+      display: grid;
+      place-items: center;
+      color: var(--accent-3);
+      background: rgba(2,8,20,.5);
+    }
+
+    .skill-badge svg { width: 24px; height: 24px; stroke-width: 1.7; }
+
+    .skill-item strong { display: block; font-family: var(--serif); font-size: 1.12rem; }
+    .skill-item span { color: var(--muted); font-size: .9rem; }
+
+    .orbit {
+      min-height: 360px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .orbit::before,
+    .orbit::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(169, 212, 255, .16);
+      border-radius: 50%;
+    }
+
+    .orbit::before { width: 290px; height: 290px; }
+    .orbit::after { width: 205px; height: 205px; }
+
+    .core {
+      width: 172px;
+      height: 172px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      line-height: 1.15;
+      border: 1px solid rgba(169, 212, 255, .62);
+      background: radial-gradient(circle at 50% 10%, rgba(85, 167, 255, .38), rgba(5, 20, 43, .96) 72%);
+      box-shadow: 0 0 56px rgba(85,167,255,.28);
+      position: relative;
+      z-index: 2;
+    }
+
+    .core::before, .core::after {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 0 16px 4px rgba(85,167,255,.65);
+    }
+
+    .core::before { top: -42px; }
+    .core::after { bottom: -42px; }
+
+    .tool-grid-mobile {
+      display: none;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .8rem;
+      margin-top: 1rem;
+    }
+
+    .tool-pill {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem;
+      color: var(--muted);
+      background: rgba(4, 16, 34, .66);
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .experience-card {
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      gap: 1.1rem;
+      align-items: start;
+    }
+
+    .logo-tile {
+      width: 84px;
+      height: 84px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(16,44,87,.8), rgba(2,8,20,.72));
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      color: var(--accent-3);
+    }
+
+    .experience-card small {
+      color: var(--soft);
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .experience-card h3 { margin-top: .4rem; }
+
+    .experience-card p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin: .75rem 0 0;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      color: var(--accent-3);
+      border: 1px solid rgba(169,212,255,.2);
+      border-radius: 999px;
+      padding: .35rem .65rem;
+      font-size: .82rem;
+      background: rgba(85,167,255,.08);
+    }
+
+    .cta {
+      margin: clamp(4rem, 8vw, 7rem) auto 0;
+      width: min(var(--max), calc(100% - 2rem));
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: clamp(1.5rem, 4vw, 3rem);
+      background:
+        linear-gradient(90deg, rgba(5, 19, 41, .86), rgba(5, 19, 41, .48)),
+        url("assets/star-trails.webp") center 72% / cover no-repeat;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cta::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 40%;
+      background: linear-gradient(180deg, transparent, rgba(2,8,20,.86));
+      pointer-events: none;
+    }
+
+    .cta > * { position: relative; z-index: 1; }
+
+    .cta h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: -.05em;
+      margin-bottom: .65rem;
+    }
+
+    .cta p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0;
+      max-width: 640px;
+    }
+
+    .site-footer {
+      width: min(var(--max), calc(100% - 2rem));
+      margin: 1.5rem auto 0;
+      padding: 1.2rem 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      color: rgba(183,197,220,.72);
+      font-size: .92rem;
+    }
+
+    .site-footer strong { color: var(--accent); font-weight: 700; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      .menu-button { display: block; }
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 1px);
+        left: 1rem;
+        right: 1rem;
+        display: grid;
+        padding: .8rem;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(2,8,20,.94);
+        backdrop-filter: blur(18px);
+        box-shadow: var(--shadow);
+        transform: translateY(-8px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .nav-links.is-open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+      .nav-links a { padding: .9rem 1rem; }
+      .nav-cta { margin-left: 0; }
+      .journey {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+      }
+      .journey::before,
+      .journey::after { display: none; }
+      .milestone {
+        text-align: left;
+        display: grid;
+        grid-template-columns: 82px 1fr;
+        gap: 1rem;
+        padding: 1rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: rgba(5,18,39,.58);
+      }
+      .milestone .date { grid-column: 2; margin: 0; order: -1; }
+      .node { grid-row: 1 / span 4; margin: .15rem auto 0; width: 64px; height: 64px; }
+      .grid-3, .impact-strip, .experience-grid { grid-template-columns: 1fr; }
+      .constellation { grid-template-columns: 1fr; }
+      .orbit { display: none; }
+      .tool-grid-mobile { display: grid; }
+      .cta { grid-template-columns: 1fr; }
+      .site-footer { flex-direction: column; }
+    }
+
+    @media (max-width: 620px) {
+      .brand span:last-child { display: none; }
+      .hero { min-height: 82vh; }
+      .hero-inner { padding: 7.6rem 0 4.8rem; }
+      h1 { font-size: clamp(3.5rem, 18vw, 5.4rem); }
+      .button-row .btn { flex: 1 1 100%; }
+      .section { width: min(100% - 1.1rem, var(--max)); padding-top: 3.7rem; }
+      .section-heading { gap: .8rem; }
+      .section-line::after { display: none; }
+      .milestone { grid-template-columns: 62px 1fr; gap: .85rem; }
+      .node { width: 54px; height: 54px; font-size: 1.2rem; }
+      .card { padding: 1.1rem; }
+      .experience-card { grid-template-columns: 1fr; }
+      .logo-tile { width: 64px; height: 64px; border-radius: 16px; }
+      .tool-grid-mobile { grid-template-columns: 1fr; }
+      .cta .button-row .btn { flex: 1 1 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <div class="nav-wrap">
+      <a class="brand" href="#home" aria-label="Justin Chun home">
+        <span class="monogram" aria-hidden="true">JC</span>
+        <span>Justin Chun</span>
+      </a>
+
+      <button class="menu-button" type="button" aria-label="Open navigation" aria-controls="primary-nav" aria-expanded="false" data-menu-button>
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="primary-nav" data-nav>
+        <a href="#home">Home</a>
+        <a href="#journey">Career Journey</a>
+        <a href="#cases">Case Snapshot</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a class="nav-cta" href="mailto:hjoonc.23@gmail.com">Contact Me</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="home" aria-label="Hero">
+      <div class="hero-inner">
+        <div class="eyebrow reveal">Systems. People. Outcomes.</div>
+        <h1 class="reveal">Justin Chun</h1>
+        <p class="subtitle reveal">SaaS Implementation | Onboarding Project Management | DTC &amp; eCommerce</p>
+        <p class="hero-copy reveal">I guide customers from transition to launch, adoption, and long-term success.</p>
+        <div class="button-row reveal" aria-label="Primary actions">
+          <a class="btn btn-primary" href="assets/Justin_Chun_Resume.pdf" target="_blank" rel="noopener">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
+            Resume
+          </a>
+          <a class="btn" href="https://www.linkedin.com/in/justchun/" target="_blank" rel="noopener">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.86-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.33V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.31 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.09 20.45H3.52V9h3.57v11.45z"/></svg>
+            LinkedIn
+          </a>
+          <a class="btn" href="mailto:hjoonc.23@gmail.com">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+            Contact
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="journey" aria-labelledby="journey-title">
+      <div class="section-heading">
+        <h2 id="journey-title">Career Journey</h2>
+        <span class="section-line" aria-hidden="true"></span>
+      </div>
+
+      <div class="journey">
+        <article class="milestone">
+          <div class="date">2019 — 2022</div>
+          <div class="node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 21s4-5 4-9"/><path d="M12 12c0-4 4-6 8-6 0 4-2 8-6 8"/><path d="M12 12C9 8 5 7 2 8c0 4 3 7 7 7"/><path d="M12 12c2 2 3 5 2 9"/></svg></div>
+          <div>
+            <h3>Vine Cliff Winery</h3>
+            <div class="role">DTC &amp; Hospitality Manager</div>
+            <p>Owned wine club operations, hospitality, events, staff training, customer experience, and DTC improvements.</p>
+          </div>
+        </article>
+
+        <article class="milestone">
+          <div class="date">2022 — 2024</div>
+          <div class="node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9h18"/><path d="M5 9V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><path d="M6 9v10"/><path d="M18 9v10"/><path d="M6 19h12"/><path d="M9 13h6"/></svg></div>
+          <div>
+            <h3>WineDirect</h3>
+            <div class="role">Project Manager</div>
+            <p>Led end-to-end onboarding projects from sales handoff through eCommerce launch for clients of varying complexity.</p>
+          </div>
+        </article>
+
+        <article class="milestone">
+          <div class="date">2024 — 2025</div>
+          <div class="node" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div>
+            <h3>WineDirect</h3>
+            <div class="role">Enterprise Client Success Manager</div>
+            <p>Managed enterprise relationships, improved adoption, surfaced feedback, and supported long-term account success.</p>
+          </div>
+        </article>
+
+        <article class="milestone">
+          <div class="date">2025</div>
+          <div class="node" aria-hidden="true">C7</div>
+          <div>
+            <h3>Commerce7</h3>
+            <div class="role">Enterprise Relationship Manager</div>
+            <p>Managed 25–50 active migration and onboarding accounts during a merger-driven platform transition.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="impact-strip" aria-label="Selected impact metrics">
+        <div class="impact"><strong>25–50</strong><span>Active Accounts</span><p>Managed concurrent migration and onboarding portfolios.</p></div>
+        <div class="impact"><strong>Sales → Launch</strong><span>Onboarding Ownership</span><p>Guided clients from handoff through eCommerce launch readiness.</p></div>
+        <div class="impact"><strong>35%</strong><span>Net Membership Growth</span><p>Contributed to wine club growth through process and experience improvements.</p></div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="cases" aria-labelledby="cases-title">
+      <div class="section-heading">
+        <h2 id="cases-title">Case Snapshot</h2>
+        <span class="section-line" aria-hidden="true"></span>
+      </div>
+
+      <div class="grid-3">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 16l-4-4-4 4"/><path d="M12 12v9"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/><path d="M16 16h1a4 4 0 0 0 0-8h-.7"/></svg></div>
+          <h3>Platform Migration</h3>
+          <p>Structured client transitions with clear timelines, blocker tracking, expectation management, and launch readiness.</p>
+          <ul class="checks">
+            <li>Cross-functional planning</li>
+            <li>Client communication</li>
+            <li>Risk and blocker management</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h8.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+          <h3>eCommerce Onboarding</h3>
+          <p>Led clients from sales handoff through platform setup, training, status reporting, and successful eCommerce launch.</p>
+          <ul class="checks">
+            <li>Requirements and scope alignment</li>
+            <li>Client training</li>
+            <li>Launch preparation</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 15l4-4 4 4 5-8"/><path d="M17 7h3v3"/></svg></div>
+          <h3>Wine Club Growth</h3>
+          <p>Improved DTC processes, member experience, events, and customer engagement while supporting measurable growth.</p>
+          <ul class="checks">
+            <li>Member account ownership</li>
+            <li>Experience improvements</li>
+            <li>Retention-oriented operations</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal" id="skills" aria-labelledby="skills-title">
+      <div class="section-heading">
+        <h2 id="skills-title">Tools &amp; Skills Constellation</h2>
+        <span class="section-line" aria-hidden="true"></span>
+      </div>
+
+      <div class="constellation">
+        <div class="skill-list">
+          <div class="skill-item"><span class="skill-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17.5 19H7a5 5 0 1 1 .9-9.9A7 7 0 0 1 21 12a4 4 0 0 1-3.5 7Z"/></svg></span><div><strong>Salesforce</strong><span>CRM &amp; account management</span></div></div>
+          <div class="skill-item"><span class="skill-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/></svg></span><div><strong>HubSpot</strong><span>Marketing and customer workflows</span></div></div>
+          <div class="skill-item"><span class="skill-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><div><strong>Teamwork / Basecamp</strong><span>Project tracking and delivery</span></div></div>
+          <div class="skill-item"><span class="skill-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg></span><div><strong>Jira</strong><span>Issue tracking and internal coordination</span></div></div>
+        </div>
+
+        <div class="orbit" aria-hidden="true"><div class="core">Customer<br>Success at<br>Every Stage</div></div>
+
+        <div class="skill-list">
+          <div class="skill-item"><span class="skill-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg></span><div><strong>Intercom</strong><span>Customer communication</span></div></div>
+          <div class="skill-item"><span class="skill-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M9 17h1"/></svg></span><div><strong>WineDirect</strong><span>DTC platform expertise</span></div></div>
+          <div class="skill-item"><span class="skill-badge" aria-hidden="true">C7</span><div><strong>Commerce7</strong><span>eCommerce, migration, onboarding</span></div></div>
+          <div class="skill-item"><span class="skill-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20v-6"/><path d="M6 20V10"/><path d="M18 20V4"/></svg></span><div><strong>Process Optimization</strong><span>Documentation, training, adoption</span></div></div>
+        </div>
+      </div>
+
+      <div class="tool-grid-mobile" aria-label="Mobile tools list">
+        <div class="tool-pill">Customer Onboarding</div>
+        <div class="tool-pill">Stakeholder Communication</div>
+        <div class="tool-pill">Launch Readiness</div>
+        <div class="tool-pill">Adoption &amp; Retention</div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="experience" aria-labelledby="experience-title">
+      <div class="section-heading">
+        <h2 id="experience-title">Experience</h2>
+        <span class="section-line" aria-hidden="true"></span>
+      </div>
+
+      <div class="experience-grid">
+        <article class="card experience-card">
+          <div class="logo-tile" aria-hidden="true">C7</div>
+          <div>
+            <small>February 2025 — November 2025</small>
+            <h3>Commerce7</h3>
+            <div class="role">Enterprise Relationship Manager</div>
+            <p>Owned post-sales through launch as the primary point of contact for migration and onboarding projects during a merger-driven platform transition.</p>
+            <div class="tags"><span class="tag">Migration</span><span class="tag">Onboarding</span><span class="tag">Client Communication</span></div>
+          </div>
+        </article>
+
+        <article class="card experience-card">
+          <div class="logo-tile" aria-hidden="true">WD</div>
+          <div>
+            <small>September 2024 — February 2025</small>
+            <h3>WineDirect</h3>
+            <div class="role">Enterprise Client Success Manager</div>
+            <p>Managed enterprise client relationships with executive and operational stakeholders to improve adoption, workflow usage, and account success.</p>
+            <div class="tags"><span class="tag">Customer Success</span><span class="tag">Adoption</span><span class="tag">Feedback Loops</span></div>
+          </div>
+        </article>
+
+        <article class="card experience-card">
+          <div class="logo-tile" aria-hidden="true">WD</div>
+          <div>
+            <small>March 2022 — September 2024</small>
+            <h3>WineDirect</h3>
+            <div class="role">Project Manager</div>
+            <p>Led end-to-end onboarding projects from sales handoff through eCommerce launch, balancing timelines with shifting client priorities.</p>
+            <div class="tags"><span class="tag">Project Management</span><span class="tag">Training</span><span class="tag">Launch</span></div>
+          </div>
+        </article>
+
+        <article class="card experience-card">
+          <div class="logo-tile" aria-hidden="true">VC</div>
+          <div>
+            <small>September 2019 — April 2022</small>
+            <h3>Vine Cliff Winery</h3>
+            <div class="role">DTC &amp; Hospitality Manager</div>
+            <p>Owned the wine club program, managed membership accounts, improved customer experience, led direct sales, events, and hospitality staff.</p>
+            <div class="tags"><span class="tag">DTC</span><span class="tag">Wine Club</span><span class="tag">Hospitality</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta reveal" id="contact" aria-labelledby="contact-title">
+      <div>
+        <h2 id="contact-title">Let’s build what’s next.</h2>
+        <p>I’m open to opportunities where implementation, onboarding, customer success, and operational clarity matter.</p>
+      </div>
+      <div class="button-row">
+        <a class="btn btn-primary" href="mailto:hjoonc.23@gmail.com"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="m22 6-10 7L2 6"/></svg>Contact Me</a>
+        <a class="btn" href="assets/Justin_Chun_Resume.pdf" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Download Resume</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>© <span id="year"></span> Justin Chun</span>
+    <span>Built with <strong>purpose</strong>. Driven by <strong>impact</strong>.</span>
+  </footer>
+
+  <script>
+    const header = document.querySelector('[data-header]');
+    const nav = document.querySelector('[data-nav]');
+    const menuButton = document.querySelector('[data-menu-button]');
+    const navLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+    const sections = navLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function setHeaderState() {
+      header.classList.toggle('is-scrolled', window.scrollY > 10);
+    }
+
+    function closeMenu() {
+      nav.classList.remove('is-open');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.setAttribute('aria-label', 'Open navigation');
+    }
+
+    menuButton.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('is-open');
+      menuButton.setAttribute('aria-expanded', String(isOpen));
+      menuButton.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+    });
+
+    navLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeMenu();
+    });
+
+    const activeObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(link => {
+          link.setAttribute('aria-current', link.getAttribute('href') === `#${entry.target.id}` ? 'true' : 'false');
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0.01 });
+
+    sections.forEach(section => activeObserver.observe(section));
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    window.addEventListener('scroll', setHeaderState, { passive: true });
+    setHeaderState();
+  </script>
+</body>
+</html>
